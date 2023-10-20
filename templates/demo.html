@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Chatbot</title>
+    <style>
+        /* Styles for the chat interface */
+        body {
+            background-color: #f2f2f2;
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        .chat-container {
+            max-width: 400px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.2);
+        }
+
+        h1 {
+            text-align: center;
+            color: #007bff;
+            margin-top: 20px;
+        }
+
+        .user-input-form {
+            text-align: center;
+            margin-bottom: 10px;
+        }
+
+        .user-input {
+            padding: 10px;
+            margin: 10px 0;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            outline: none;
+            font-size: 16px;
+            width: 80%;
+            max-width: 300px;
+            display: inline-block;
+        }
+
+        .send-button {
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            padding: 10px 20px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: background-color 0.3s ease;
+        }
+
+        .send-button:hover {
+            background-color: #0056b3;
+        }
+
+        .chatbox {
+            background-color: #f5f5f5;
+            border-radius: 8px;
+            padding: 10px;
+            max-height: 400px;
+            overflow-y: auto;
+        }
+
+        .chat-message {
+            background-color: #007bff;
+            color: #fff;
+            border-radius: 8px;
+            padding: 10px;
+            margin: 10px 0;
+            max-width: 70%;
+            word-wrap: break-word;
+        }
+
+        /* Typing animation styles */
+        #typing-text {
+            font-size: 18px;
+            font-family: Arial, sans-serif;
+            opacity: 0; /* Start with text hidden */
+            animation: fadeIn 1s ease-in-out forwards; /* Fade in animation */
+        }
+
+        @keyframes fadeIn {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
+        }
+    </style>
+</head>
+<body>
+    <h1>Chatbot</h1>
+    <div class="chat-container">
+        <div class="chatbox">
+            <!-- Display chat messages here -->
+            <div class="chat-message" id="typing-text"></div>
+        </div>
+
+        <div class="user-input-form">
+            <form method="GET">
+                <input type="text" name="user_input" value="{{ user_input }}" class="user-input" placeholder="Type your message">
+                <button type="submit" class="send-button">Send</button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Get the response from Django view
+        var response = "{{ response|safe }}";
+        var typingText = document.getElementById('typing-text');
+
+        // Function to simulate typing
+        function typeResponse() {
+            var index = 0;
+            var typingInterval = setInterval(function () {
+                if (index < response.length) {
+                    typingText.innerHTML += response.charAt(index);
+                    index++;
+                } else {
+                    clearInterval(typingInterval);
+                }
+            }, 80); // Adjust the typing speed as needed (milliseconds)
+        }
+
+        // Start typing animation when the page loads
+        window.onload = function () {
+            typeResponse();
+        };
+    </script>
+</body>
+</html>
